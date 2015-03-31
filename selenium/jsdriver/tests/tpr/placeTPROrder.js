@@ -1,3 +1,4 @@
+var webdriverFactoryModule = require('../../utility/webdriverFactory.js');
 var webdriverModule = require('selenium-webdriver');
 var assert = require('selenium-webdriver/testing/assert');
 
@@ -61,15 +62,9 @@ var cityStateZip4 = "Fontana";
 var state4 = "CA";
 var zip4 = "92336";
 
+var webdriverFactoryRef  = webdriverFactoryModule.webdriverFactory;
 
-/*
-var webdriverClient = new webdriverModule.Builder()
-								         .withCapabilities(webdriverModule.Capabilities.chrome())
-								         .build();
-								         */
-var webdriverClient = new webdriverModule.Builder()
-    					  .forBrowser("chrome")
-    				      .build();
+var webdriverClient = webdriverFactoryRef.createWebdriverClientFor("chrome");
 
 webdriverClient.get("https://dev-logins.interthinx.com/adfs/ls/?wa=wsignin1.0&wtrealm=https%3a%2f%2fwww.dev-fraudguard.com%2fSysdome2010%2f&wctx=rm%3d0%26id%3dpassive%26ru%3d%252fSysdome2010%252f&wct=2015-03-26T18%3a56%3a43Z");
 
