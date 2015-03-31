@@ -75,13 +75,14 @@ tprUseCase.loginAs = function(webdriverClient, name, pass, seCret, url){
 	var browserUtility = browserUtilityModule.browserUtility;
 	var getPromise = webdriverClient.get(url);
 
-	var doesTitleFound = browserUtility.waitForWebTitle(webdriverClient, "Sign", 3000);
-	
-	if(doesTitleFound){
-		browserUtility.sendKeysWebElement(webdriverClient,{id:'ctl00_ContentPlaceHolder1_UsernameTextBox'}, name);
-		browserUtility.sendKeysWebElement(webdriverClient,{id:'ctl00_ContentPlaceHolder1_PasswordTextBox'}, pass);
+	browserUtility.waitForWebTitle(webdriverClient, "Sign", 3000).then(function(newWebDriverClient){
+		if(doesTitleFound){
+			browserUtility.sendKeysWebElement(webdriverClient,{id:'ctl00_ContentPlaceHolder1_UsernameTextBox'}, name);
+			browserUtility.sendKeysWebElement(webdriverClient,{id:'ctl00_ContentPlaceHolder1_PasswordTextBox'}, pass);
 
-	}
+		}	
+
+	})	
 
 
 }

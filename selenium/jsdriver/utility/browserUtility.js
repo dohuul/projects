@@ -22,45 +22,29 @@ var browserUtility = {
 	}
 }
 
-//search all windoes for title
-//if there more than two windows, return the first one
+
 browserUtility.waitForWebTitle = function(webdriverClient, title, timeout){
-		var titleFound = false;
-		var getHandlesPromise = webdriverClient.getAllWindowHandles();
+	return new webdriverModule.promise.Promise(function(resolveFunc, rejectFunc){
 
-		getHandlesPromise.then(function(handles){
-			console.log("log: getHandlesPromise in Utility fullfilled -- page title is " + title);
-		
-			for (var handle in handles){
+		webdriverClient.getAllWindowHandles().then(function(handles){
+			for(var handleId in handles){
+				webdriverClient.switchTo().window(handles[handleId]).then(function(){
 
-				webdriverClient.switchTo().window(handles[handle]).then(function(){
-					console.log("log: switchToHandlePromise fullfilled -- page title is " + title);
+					webdriverClient.getTitle().then(function(pageTitle){
+						if(pageTitle.indexOf(title) !== -1)
+							return resolveFunc(webdriverClient);						
+					});
 
-					var waitForPageTitlePromise = webdriverClient.wait(until.titleContains(title), timeout);
-					waitForPageTitlePromise.then(function(doesPageTitleExist){
-						console.log("log: waitForPageTitlePromise fullfilled -- page title is " + title );						
-						return doesPageTitleExist;
-						
-					},function(error){
-
-						console.log("log: waitForPageTitlePromise failed -- page title is " + title);
-					});	
-
-				},function(error){					
-					console.log("log: switchToHandlePromise failed -- page title is " + title + " error: " + error);
 				});
 
-				//return the first found title
-				if(titleFound)
-					break;
 			}
 
-		},function(error){
-			console.log("logging: getHandlesPromise in Utility failed" );
 		})
-		console.log("titleFound is " + titleFound)
-		return getHandlesPromise;
+
+	});
 }
+
+
 
 browserUtility.clickWebElement = function(webdriverClient, searchLocatorObj){
 	console.log("enterwq")

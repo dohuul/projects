@@ -10,7 +10,7 @@ var dummyObj = {
 				return reject("name cannot be null");
 			}
 			else{
-				return resolve(name);
+				return resolve();
 			}
 
 		})
@@ -19,11 +19,12 @@ var dummyObj = {
 
 
 
-dummyObj.sayHello(null).then(function(name){
+dummyObj.sayHello("k").then(function(resovlerPar1){
 
-	console.log(name);
+	console.log(resovlerPar1);
 },function(error){
 
 	console.log(error);
 })
+console.log("123")
 
