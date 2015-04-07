@@ -10,6 +10,19 @@ var defaultTimeout = 3000;
 
 var browserUtility = {
 	'waitForWebElement' : function(webdriverClient, seleniumSearchLocatorObj, timeout){
+		return new webdriverModule.promise.Promise(function(resolve,reject){
+
+			webdriverClient.wait(until.elementLocated(seleniumSearchLocatorObj), timeout).then(function(webElement){
+				resolve(webElement);
+
+			},function(error){
+				reject(error);
+			});
+
+		})
+
+
+
 			
 			var elementFound = false;
 			var waitPromise = webdriverClient.wait(until.elementLocated(seleniumSearchLocatorObj), timeout);
@@ -47,24 +60,27 @@ browserUtility.waitForWebTitle = function(webdriverClient, title, timeout){
 
 
 browserUtility.clickWebElement = function(webdriverClient, searchLocatorObj){
-	console.log("enterwq")
-	var isElementFound = waitForWebElement(webdriverClient, searchLocatorObj, defaultTimeout);
-	if(isElementFound){
-		webdriverClient.findElement(searchLocatorObj).click();		
-	}
-	else{
-		throw "Can't perform click because can not find element";
-	}
+	 console.log("log: enter clickWebElement " + searchLocatorObj);
+	 browserUtility.waitForWebElement(webdriverClient, searchLocatorObj, defaultTimeout).then(function(webElement){
+	 	webElement.click();
+
+	 	console.log("log: exit clickWebElement " + searchLocatorObj);
+	 },function(error){
+
+	 	console.log("log: error clickWebElement " + error)
+	 });	
 }
 
 browserUtility.sendKeysWebElement = function(webdriverClient, searchLocatorObj, text){
-	var isElementFound = waitForWebElement(webdriverClient, searchLocatorObj, defaultTimeout);
-	if(isElementFound){
-		webdriverClient.findElement(searchLocatorObj).sendKeys(text);		
-	}
-	else{
-		throw "Can't perform send keys because can not find element";
-	}
+	 console.log("log: enter sendKeysWebElement " + searchLocatorObj);
+	 browserUtility.waitForWebElement(webdriverClient, searchLocatorObj, defaultTimeout).then(function(webElement){
+	 	webElement.sendKeys(text);
+
+	 	console.log("log: exit sendKeysWebElement " + searchLocatorObj);
+	 },function(error){
+
+	 	console.log("log: error sendKeysWebElement " + error);
+	 });	
 }
 
 module.exports.browserUtility = browserUtility;

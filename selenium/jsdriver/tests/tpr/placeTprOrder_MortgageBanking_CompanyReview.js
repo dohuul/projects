@@ -15,7 +15,15 @@ var url = "https://dev-logins.interthinx.com/adfs/ls/?wa=wsignin1.0&wtrealm=http
 
 tprUseCase.loginAs(webdriverClient,tprUser,tprPass, tprSec, url).then(function(newWebdriverClient){
 
-	var companyData = {
+	newWebdriverClient.findElements({name:'requestentity'}).then(function(elements){
+
+
+
+			elements[3].getAttribute("value").then(function(elementValue){
+				if(elementValue == "23"){
+
+					elements[3].click().then(function(){
+								var companyData = {
 		name : "Interthinx",
 		address : "8782 Lanark Cir",
 		city : "Huntington Beach",
@@ -83,7 +91,21 @@ tprUseCase.loginAs(webdriverClient,tprUser,tprPass, tprSec, url).then(function(n
 	}, function(error){
 		console.log("log: error"  +error);
 
+	});					
+
+
+					});
+				}
+
+			})
+
+
+		
+
 	});
+
+
+	
 
 });
 
