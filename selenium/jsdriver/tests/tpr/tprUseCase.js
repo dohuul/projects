@@ -9,6 +9,7 @@ var tprUseCase = {
 		var agentSearchLocator = {
 			fName: "own1fname",
 			lName:"own1lname",
+			mName: "own1mname",
 			ssna: "own1ssna",
 			ssnb: "own1ssnb",
 			ssnc: "own1ssnc",
@@ -26,6 +27,7 @@ var tprUseCase = {
 		var agentSearchLocator = {
 			fName: "own2fname",
 			lName:"own2lname",
+			mName: "own2mname",
 			ssna: "own2ssna",
 			ssnb: "own2ssnb",
 			ssnc: "own2ssnc",
@@ -43,6 +45,7 @@ var tprUseCase = {
 		var agentSearchLocator = {
 			fName: "own3fname",
 			lName:"own3lname",
+			mName: "own3mname",
 			ssna: "own3ssna",
 			ssnb: "own3ssnb",
 			ssnc: "own3ssnc",
@@ -60,6 +63,7 @@ var tprUseCase = {
 		var agentSearchLocator = {
 			fName: "own4fname",
 			lName:"own4lname",
+			mName: "own4mname",
 			ssna: "own4ssna",
 			ssnb: "own4ssnb",
 			ssnc: "own4ssnc",
@@ -108,7 +112,11 @@ var tprUseCase = {
 			webdriverClient.findElement({name:'cmpcity'}).sendKeys(brokerData.city);
 			webdriverClient.findElement({name:'cmpzipcode'}).sendKeys(brokerData.zip);
 
+		     webdriverClient.findElement({name:'own1ssna'}).sendKeys(brokerData.ssna);
+		     webdriverClient.findElement({name:'own1ssnb'}).sendKeys(brokerData.ssnb);
+		     webdriverClient.findElement({name:'own1ssnc'}).sendKeys(brokerData.ssnc);
 
+		     webdriverClient.findElement({name:'own1mname'}).sendKeys(brokerData.mName);
 
 
 			var combobox1 = webdriverClient.findElement({name:'own1state'})
@@ -145,6 +153,7 @@ var tprUseCase = {
 		return new webdriverModule.promise.Promise(function(resolve, reject){
 			webdriverClient.findElement({name:'own1fname'}).sendKeys(appraiserFirmData.fName);
 			webdriverClient.findElement({name:'own1lname'}).sendKeys(appraiserFirmData.lName);
+			webdriverClient.findElement({name:'own1mname'}).sendKeys(appraiserFirmData.mName);
 			webdriverClient.findElement({name:'own1Address1'}).sendKeys(appraiserFirmData.address);
 			webdriverClient.findElement({name:'own1city'}).sendKeys(appraiserFirmData.city);
 			webdriverClient.findElement({name:'own1zipcode'}).sendKeys(appraiserFirmData.zip);
@@ -154,30 +163,16 @@ var tprUseCase = {
 			webdriverClient.findElement({name:'own1ssna'}).sendKeys(appraiserFirmData.ssna);
 			webdriverClient.findElement({name:'own1ssnb'}).sendKeys(appraiserFirmData.ssnb);
 			webdriverClient.findElement({name:'own1ssnc'}).sendKeys(appraiserFirmData.ssnc);
+			var browserUtility = browserUtilityModule.browserUtility;
+			browserUtility.clickComboboxOptionByIndex(webdriverClient, {name:'own1state'}, 6).then(function(){
+				webdriverClient.findElement({name:'tprsubmit'}).click().then(function(){
 
-
-
-			var combobox1 = webdriverClient.findElement({name:'own1state'})
-			combobox1.click();
-			combobox1.sendKeys(Key.DOWN);
-			combobox1.sendKeys(Key.DOWN);
-			combobox1.sendKeys(Key.DOWN);
-			combobox1.sendKeys(Key.DOWN);
-			combobox1.sendKeys(Key.DOWN);
-			combobox1.sendKeys(Key.DOWN);
-			combobox1.sendKeys(Key.ENTER);
-			
-
-			webdriverClient.findElement({name:'tprsubmit'}).click().then(function(){
-
+					
+				})
 				resolve(webdriverClient);
-			})
-
-			
+			});	
 
 		});		
-
-
 	}
 }
 
@@ -191,18 +186,21 @@ tprUseCase.loginAs = function(webdriverClient, name, pass, seCret, url){
 			browserUtility.sendKeysWebElement(newWebDriverClient,{id:'ctl00_ContentPlaceHolder1_UsernameTextBox'}, name);
 			browserUtility.sendKeysWebElement(newWebDriverClient,{id:'ctl00_ContentPlaceHolder1_PasswordTextBox'}, pass);		
 			browserUtility.clickWebElement(newWebDriverClient,{id:'ctl00_ContentPlaceHolder1_SubmitButton'});
+
+			if(url != "https://www.fraudguard.com/")
+			{
 			browserUtility.sendKeysWebElement(newWebDriverClient,{id:'ctl00_ContentPlaceHolder1_MFAtokenGenerator_txtSecurityQuestion'}, seCret);
 			browserUtility.clickWebElement(newWebDriverClient,{id:'ctl00_ContentPlaceHolder1_MFAtokenGenerator_btnContinue'});	
+			}
 
 
-			browserUtility.waitForWebTitle(newWebDriverClient, "dev-fraudguard", 3000).then(function(newWebdriverClient){
-
+			browserUtility.waitForWebTitle(newWebDriverClient, "fraudguard", 3000).then(function(newWebdriverClient){
 				webdriverClient.findElement({linkText:'Third Party Review'}).click();
 				browserUtility.clickWebElement(newWebDriverClient,{id:'submit1'});
 					browserUtility.waitForWebTitle(newWebDriverClient, "dev-fraudguard", 3000).then(function(anotherNewWebdriverClient){
+							resolve(anotherNewWebdriverClient);
+					});			
 
-						resolve(anotherNewWebdriverClient);
-					});
 				
 
 			},function(error){				
@@ -221,9 +219,10 @@ tprUseCase.loginAs = function(webdriverClient, name, pass, seCret, url){
 }
 
 tprUseCase.loginIntranetAs = function(webdriverClient, name, pass, seCret, url){
-
-
+	
 }
+
+
 
 
 tprUseCase.printTprOrderNumber = function(webdriverClient){
@@ -232,7 +231,7 @@ tprUseCase.printTprOrderNumber = function(webdriverClient){
 			tprFormElement.then(function(element){
 			var text = element.getText();
 			text.then(function(textt){
-			console.log(textt);
+			//console.log(textt);
 
 			var indexOfTPROrder = textt.indexOf("TPR#:");
 			var TPROrderNumber = textt.substring(indexOfTPROrder, indexOfTPROrder+14);
@@ -266,6 +265,7 @@ function fillGenericAgentInformation(webdriverClient,agentData, agentSearchLocat
 */
 	webdriverClient.findElement({name:agentSearchLocator.fName}).sendKeys(agentData.fName);
 	webdriverClient.findElement({name:agentSearchLocator.lName}).sendKeys(agentData.lName);
+	webdriverClient.findElement({name:agentSearchLocator.mName}).sendKeys(agentData.mName);
 	webdriverClient.findElement({name:agentSearchLocator.ssna}).sendKeys(agentData.ssna);
 	webdriverClient.findElement({name:agentSearchLocator.ssnb}).sendKeys(agentData.ssnb);
 	webdriverClient.findElement({name:agentSearchLocator.ssnc}).sendKeys(agentData.ssnc);
