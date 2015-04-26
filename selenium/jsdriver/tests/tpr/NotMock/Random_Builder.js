@@ -106,6 +106,9 @@ tprUseCase.loginAs(webdriverClient,tprUser,tprPass, tprSec, url).then(function(n
 
 	});
 
+}, function(error){
+
+	console.log(error);
 });
 
 
