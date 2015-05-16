@@ -17,12 +17,12 @@ getUrlPromise.then(function(){
 	//callback fullfilled implementation	
 	console.log("getFraudGuardUrlPromise fullfilled");
 
-	var waitForIdBoxPromise = browserUtility.waitForWebElement(webdriver, {id:'ctl00_ContentPlaceHolder1_UsernameTextBox'}, 3000);
+	var waitForIdBoxPromise = browserUtility.waitForWebTitleV2(webdriver, {id:'ctl00_ContentPlaceHolder1_UsernameTextBox'}, 3000);
 
 		waitForIdBoxPromise.then(function(idBoxElement){
 			console.log("waitForIdBoxPromise fullfilled");
 
-			var waitForBrowserTitlePromise = browserUtility.waitForWebTitle(webdriver, "Siagn", 5000);
+			var waitForBrowserTitlePromise = browserUtility.waitForWebTitleV2(webdriver, "Sign", 5000);
 
 			waitForBrowserTitlePromise.then(function(isFound){
 				console.log("waitForBrowserTitlePromise fullfilled");

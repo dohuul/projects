@@ -17,7 +17,7 @@ getUrlPromise.then(function(){
 	//callback fullfilled implementation	
 	console.log("getFraudGuardUrlPromise fullfilled");
 
-	var waitForIdBoxPromise = browserUtility.waitForWebTitleV2(webdriver, {id:'ctl00_ContentPlaceHolder1_UsernameTextBox'}, 3000);
+	var waitForIdBoxPromise = browserUtility.waitForWebElement(webdriver, {id:'ctl00_ContentPlaceHolder1_UsernameTextBox'});
 
 		waitForIdBoxPromise.then(function(idBoxElement){
 			console.log("waitForIdBoxPromise fullfilled");
